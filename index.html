@@ -14,7 +14,8 @@
 <meta property="og:image:alt" content="Real-time concert visuals by Alejandro Miguel Justino Crawford">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#07080a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2307080a'/%3E%3Crect x='4' y='4' width='2' height='2' fill='%23ece6da'/%3E%3Crect x='10' y='4' width='2' height='2' fill='%23ece6da'/%3E%3Crect x='6' y='8' width='2' height='2' fill='%23ff5a1f'/%3E%3Crect x='8' y='10' width='2' height='2' fill='%23ece6da'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" sizes="32x32" href="media/brand/icon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="media/brand/icon-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link id="amjc-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -53,18 +54,21 @@
   #amjc .amjc-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
 
   #amjc .amjc-bar {
-    position: fixed; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: baseline; justify-content: space-between;
+    position: fixed; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between;
     padding: 18px var(--gut) 28px; font-size: 12px; letter-spacing: .06em;
     background: linear-gradient(to bottom, rgba(7, 8, 10, .9), rgba(7, 8, 10, .6) 55%, rgba(7, 8, 10, 0));
   }
-  #amjc .amjc-mark { font: italic 400 24px/1 var(--serif); letter-spacing: 0; }
+  #amjc .amjc-mark { display: block; line-height: 0; }
+  #amjc .amjc-mark img { display: block; height: 26px; width: auto; transition: opacity .2s; }
+  #amjc .amjc-mark:hover img { opacity: .72; }
   #amjc .amjc-bar nav { display: flex; gap: clamp(14px, 3vw, 32px); }
   #amjc .amjc-bar nav a.is-current { color: var(--sig); }
 
   #amjc .amjc-hero { position: relative; height: 100vh; height: 100svh; min-height: 540px; }
   #amjc .amjc-hero-foot {
     position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
-    padding: 0 var(--gut) clamp(20px, 4vh, 40px); font-size: 12px; color: var(--dim);
+    padding: 72px var(--gut) clamp(20px, 4vh, 40px); font-size: 12px; color: var(--dim);
+    background: linear-gradient(to top, rgba(7, 8, 10, .92), rgba(7, 8, 10, .55) 55%, rgba(7, 8, 10, 0));
   }
   #amjc .amjc-cue { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   #amjc .amjc-cue::after { content: ""; width: 1px; height: 44px; background: var(--dim); }
@@ -111,7 +115,7 @@
   }
 
   @media (max-width: 760px) {
-    #amjc .amjc-bar .amjc-mark { font-size: 20px; }
+    #amjc .amjc-bar .amjc-mark img { height: 22px; }
     #amjc .amjc-row { grid-template-columns: 3.4em minmax(0, 1fr); row-gap: 6px; padding-left: 0; padding-right: 0; }
     #amjc .amjc-row .a, #amjc .amjc-row .p { grid-column: 2; }
     #amjc .amjc-row .p { justify-content: flex-start; }
@@ -239,7 +243,7 @@
   <canvas class="amjc-gl" aria-hidden="true"></canvas>
   <main class="amjc-content">
     <header class="amjc-bar">
-      <a class="amjc-mark" href="/" aria-label="amjc, home">amjc</a>
+      <a class="amjc-mark" href="/" aria-label="amjc, home"><img src="media/brand/amjc-mark.png" alt="amjc" width="62" height="26"></a>
       <nav aria-label="Sections">
         <a href="#amjc-work">work</a>
         <a href="#amjc-writing">writing</a>
@@ -497,7 +501,7 @@
       var rr = rowRects[n], cy = rr.top + rr.height / 2;
       var d = (cy - focusY) / H, near = clamp(1 - Math.abs(d) * 1.6, 0, 1);
       row.style.setProperty('--scene-o', (.1 + near * .9).toFixed(3));
-      row.style.setProperty('--scene-x', (d * (story.narrow ? 22 : 70)).toFixed(1) + 'px');
+      row.style.setProperty('--scene-x', (d * (story.narrow ? 6 : 16)).toFixed(1) + 'px'); // a slight lean, not a stagger
       row.style.setProperty('--scene-z', (.975 + near * .025).toFixed(4));
       var ad = Math.abs(d);
       if (ad < focusDist) { focusDist = ad; focusRow = row; }
@@ -514,7 +518,7 @@
       var pr = pubRects[n], cy = pr.top + pr.height / 2;
       var d = (cy - focusY) / H, near = clamp(1 - Math.abs(d) * 1.45, 0, 1);
       pub.style.setProperty('--scene-o', (.14 + near * .86).toFixed(3));
-      pub.style.setProperty('--scene-x', ((n % 2 ? -1 : 1) * (1 - near) * (story.narrow ? 18 : 44)).toFixed(1) + 'px');
+      pub.style.setProperty('--scene-x', '0px'); // columns stay aligned; depth comes from opacity and scale
       pub.style.setProperty('--scene-z', (.985 + near * .015).toFixed(4));
     });
 
@@ -592,7 +596,7 @@
     ' l*=mix(1.,.26,clamp(sc*.8,0.,1.));',
     ' vec3 c=vec3(l);',
     // project still, cover-fit with a little overscan so refraction never reaches its edge; kept in colour so the dither goes 8-colour
-    ' if(ma>0.){vec2 s=asp>masp?vec2(1.,masp/asp):vec2(asp/masp,1.);vec3 mc=texture2D(med,(u-.5)*s*.94+.5).rgb;c=mix(c,pow(mc,vec3(1.3))*.82,ma);}',
+    ' if(ma>0.){vec2 s=asp>masp?vec2(1.,masp/asp):vec2(asp/masp,1.);vec3 mc=texture2D(med,(u-.5)*s*.84+.5).rgb;mc=pow(mix(vec3(dot(mc,vec3(.3,.59,.11))),mc,.6),vec3(1.35))*.6*(1.-.9*smoothstep(.2,.68,length((u-.5)*vec2(asp,1.)/max(asp,1.))));c=mix(c,mc,ma);}',
     ' vec2 t=vec2(u.x,u.y-sc*tk);',
     ' float m=texture2D(scn,t).r*step(0.,t.y)*step(t.y,1.);',
     ' return mix(c,vec3(.98*(.3+.7*clamp(1.-sc*.9,0.,1.))),m);',
@@ -817,16 +821,21 @@
     return { x: e.clientX / (W || 1), y: 1 - e.clientY / (H || 1), cx: e.clientX, cy: e.clientY, t: now() };
   }
   var viewOpen = false;
-  window.addEventListener('pointermove', function (e) {
+  function trail(src) {
     if (!simOn() || viewOpen) return;
-    var p = point(e);
+    var p = point(src);
     if (prev && p.t - prev.t < 150) {
       var dx = p.cx - prev.cx, dy = p.cy - prev.cy, d = Math.sqrt(dx * dx + dy * dy);
       if (d < 1) return;
       drop(prev.x, prev.y, p.x, p.y, -Math.min(d / (H * .05), 1) * .55, .02, true);
     }
     prev = p;
-  }, { passive: true });
+  }
+  window.addEventListener('pointermove', function (e) { if (e.pointerType !== 'touch') trail(e); }, { passive: true });
+  // Touch pointers are cancelled as soon as the page starts scrolling, but touchmove keeps
+  // firing during a native scroll, so a finger drags a wake through the water like the cursor does.
+  window.addEventListener('touchmove', function (e) { if (e.touches[0]) trail(e.touches[0]); }, { passive: true });
+  window.addEventListener('touchend', function () { prev = null; }, { passive: true });
   window.addEventListener('pointerdown', function (e) {
     if (!simOn() || viewOpen) return;
     var p = point(e);
