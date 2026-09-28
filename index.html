@@ -66,7 +66,6 @@
     position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
     padding: 0 var(--gut) clamp(20px, 4vh, 40px); font-size: 12px; color: var(--dim);
   }
-  #amjc .amjc-hero-foot .amjc-hint { color: var(--bone); }
   #amjc .amjc-cue { display: flex; flex-direction: column; align-items: center; gap: 10px; }
   #amjc .amjc-cue::after { content: ""; width: 1px; height: 44px; background: var(--dim); }
 
@@ -113,7 +112,6 @@
 
   @media (max-width: 760px) {
     #amjc .amjc-bar .amjc-mark { font-size: 20px; }
-    #amjc .amjc-hero-foot .amjc-hint { display: none; }
     #amjc .amjc-row { grid-template-columns: 3.4em minmax(0, 1fr); row-gap: 6px; padding-left: 0; padding-right: 0; }
     #amjc .amjc-row .a, #amjc .amjc-row .p { grid-column: 2; }
     #amjc .amjc-row .p { justify-content: flex-start; }
@@ -121,7 +119,7 @@
 
   /* No WebGL: the name comes back as live text over a flat glow. */
   #amjc.amjc-nogl { background: radial-gradient(70vmax 50vmax at 74% 38%, rgba(236, 230, 218, .14), transparent 70%) fixed, var(--ink); }
-  #amjc.amjc-nogl .amjc-gl, #amjc.amjc-nogl [data-hint], #amjc.amjc-still [data-hint], #amjc.amjc-nosim [data-hint] { display: none; }
+  #amjc.amjc-nogl .amjc-gl { display: none; }
   #amjc.amjc-nogl .amjc-name {
     position: absolute !important; left: var(--gut); top: 22vh; width: auto; height: auto; clip: auto; clip-path: none; white-space: normal;
     font: italic 400 clamp(56px, 13vw, 190px)/.86 var(--serif);
@@ -221,7 +219,7 @@
   <style>
     html, body { margin: 0; padding: 0; background: #07080a; overflow-x: hidden; }
     #amjc { background: radial-gradient(70vmax 50vmax at 74% 38%, rgba(236, 230, 218, .14), transparent 70%) fixed, #07080a; }
-    #amjc .amjc-gl, #amjc [data-hint], #amjc .amjc-cue { display: none; }
+    #amjc .amjc-gl, #amjc .amjc-cue { display: none; }
     #amjc .amjc-name {
       position: absolute !important; left: var(--gut); top: 22vh; width: auto; height: auto;
       overflow: visible; clip: auto; clip-path: none; white-space: normal;
@@ -253,7 +251,6 @@
       <h1 class="amjc-name amjc-sr"><span>alejandro</span> <span>miguel</span> <span>justino</span> <span>crawford</span></h1>
       <div class="amjc-hero-foot">
         <p>real-time visuals<br>live shows &amp; installations<br>writing</p>
-        <p class="amjc-hint" data-hint aria-hidden="true">move across the surface</p>
         <p class="amjc-cue" aria-hidden="true">scroll</p>
       </div>
     </section>
@@ -366,9 +363,6 @@
 
   var yr = root.querySelector('[data-year]');
   if (yr) yr.textContent = new Date().getFullYear();
-  var hint = root.querySelector('[data-hint]');
-  if (hint && window.matchMedia && matchMedia('(hover: none)').matches) hint.textContent = 'touch the surface';
-
   var mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
   var still = !!(mq && mq.matches);
 
