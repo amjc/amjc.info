@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://amjc.info/sitemap.xml

@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>alejandro miguel justino crawford</title>
+<meta name="description" content="Alejandro Miguel Justino Crawford: real-time visuals for live shows and installations, and writing.">
+<link rel="canonical" href="https://amjc.info/">
+<meta property="og:title" content="alejandro miguel justino crawford">
+<meta property="og:description" content="Real-time visuals for live shows and installations, and writing.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://amjc.info/">
+<meta property="og:image" content="https://amjc.info/media/pharos-1.jpg">
+<meta property="og:image:alt" content="Real-time concert visuals by Alejandro Miguel Justino Crawford">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#07080a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2307080a'/%3E%3Crect x='4' y='4' width='2' height='2' fill='%23ece6da'/%3E%3Crect x='10' y='4' width='2' height='2' fill='%23ece6da'/%3E%3Crect x='6' y='8' width='2' height='2' fill='%23ff5a1f'/%3E%3Crect x='8' y='10' width='2' height='2' fill='%23ece6da'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="amjc-fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  html.amjc-takeover #siteWrapper,
+  html.amjc-takeover .site-wrapper,
+  html.amjc-takeover #canvas-wrapper { display: none !important; }
+  html.amjc-takeover, html.amjc-takeover body { margin: 0 !important; padding: 0 !important; background: #07080a !important; overflow-x: hidden; }
+  html.amjc-smooth { scroll-behavior: smooth; }
+
+  #amjc {
+    --ink: #07080a; --bone: #ece6da; --dim: rgba(236, 230, 218, .56); --rule: rgba(236, 230, 218, .16); --sig: #ff5a1f;
+    --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --gut: clamp(16px, 5vw, 88px);
+    position: relative; isolation: isolate; clip-path: inset(0); overflow: hidden; overflow: clip;
+    min-height: 100vh; width: 100%; background: var(--ink); color: var(--bone);
+    font: 400 13px/1.55 var(--mono); letter-spacing: .01em; text-align: left;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  }
+  #amjc *, #amjc *::before, #amjc *::after { box-sizing: border-box; }
+  #amjc :is(h1, h2, p, ol, ul, li, a, span, nav, header, main, section, footer) {
+    margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; line-height: inherit;
+    letter-spacing: inherit; text-transform: none; text-decoration: none; list-style: none;
+  }
+  #amjc ::selection { background: var(--sig); color: var(--ink); }
+  #amjc a { cursor: pointer; transition: color .2s, border-color .2s, background-color .2s; }
+  #amjc a:hover { color: var(--sig); }
+  #amjc a:focus-visible { outline: 1px solid var(--sig); outline-offset: 3px; }
+
+  #amjc .amjc-gl {
+    position: fixed; left: 0; top: 0; z-index: 0; display: block; width: 100vw; height: 100vh; height: 100lvh;
+    pointer-events: none; image-rendering: crisp-edges; image-rendering: pixelated;
+  }
+  #amjc .amjc-content { position: relative; z-index: 1; }
+  #amjc .amjc-sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; }
+
+  #amjc .amjc-bar {
+    position: fixed; z-index: 3; top: 0; left: 0; right: 0; display: flex; align-items: baseline; justify-content: space-between;
+    padding: 18px var(--gut) 28px; font-size: 12px; letter-spacing: .06em;
+    background: linear-gradient(to bottom, rgba(7, 8, 10, .9), rgba(7, 8, 10, .6) 55%, rgba(7, 8, 10, 0));
+  }
+  #amjc .amjc-mark { font: italic 400 24px/1 var(--serif); letter-spacing: 0; }
+  #amjc .amjc-bar nav { display: flex; gap: clamp(14px, 3vw, 32px); }
+  #amjc .amjc-bar nav a.is-current { color: var(--sig); }
+
+  #amjc .amjc-hero { position: relative; height: 100vh; height: 100svh; min-height: 540px; }
+  #amjc .amjc-hero-foot {
+    position: absolute; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    padding: 0 var(--gut) clamp(20px, 4vh, 40px); font-size: 12px; color: var(--dim);
+  }
+  #amjc .amjc-hero-foot .amjc-hint { color: var(--bone); }
+  #amjc .amjc-cue { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  #amjc .amjc-cue::after { content: ""; width: 1px; height: 44px; background: var(--dim); }
+
+  #amjc .amjc-sec { position: relative; padding: clamp(96px, 18vh, 220px) var(--gut) 0; }
+  #amjc .amjc-head { position: relative; display: flex; align-items: flex-end; gap: clamp(12px, 3vw, 40px); margin-bottom: clamp(32px, 7vh, 80px); }
+  #amjc .amjc-num { font: 400 clamp(96px, 20vw, 300px)/.78 var(--serif); letter-spacing: -.03em; color: transparent; -webkit-text-stroke: 1px var(--dim); }
+  #amjc .amjc-head h2 { font: italic 400 clamp(40px, 7vw, 104px)/.9 var(--serif); letter-spacing: -.01em; padding-bottom: .06em; }
+
+  #amjc .amjc-index { border-top: 1px solid var(--rule); }
+  #amjc .amjc-row {
+    display: grid; grid-template-columns: 4.5em minmax(0, 1fr) minmax(0, 13em) minmax(0, 13em); align-items: baseline;
+    gap: 0 clamp(12px, 2vw, 32px); padding: clamp(14px, 2.2vh, 22px) 8px; border-bottom: 1px solid var(--rule);
+    background: rgba(7, 8, 10, .68); transition: background-color .25s;
+  }
+  #amjc .amjc-row:hover { background: rgba(7, 8, 10, .88); }
+  #amjc .amjc-row .y { color: var(--dim); }
+  #amjc .amjc-row .t { font: italic 400 clamp(26px, 3.4vw, 48px)/1.02 var(--serif); }
+  #amjc .amjc-row:hover .t { color: var(--sig); }
+  #amjc .amjc-row .p { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+  #amjc .amjc-row .p a { padding: 1px 7px; font-size: 11px; color: var(--dim); background: var(--ink); border: 1px solid var(--rule); }
+  #amjc .amjc-row .p a:hover { color: var(--sig); border-color: var(--sig); }
+
+  #amjc .amjc-pubs { columns: 2 24em; column-gap: clamp(24px, 5vw, 80px); }
+  #amjc .amjc-pub {
+    display: grid; grid-template-columns: 3.6em minmax(0, 1fr); gap: 0 16px; padding: 14px 8px; border-top: 1px solid var(--rule);
+    background: rgba(7, 8, 10, .68); break-inside: avoid;
+  }
+  #amjc .amjc-pub .y { color: var(--dim); }
+  #amjc .amjc-pub a { font: italic 400 clamp(21px, 2.1vw, 28px)/1.15 var(--serif); }
+  #amjc .amjc-pub .v { grid-column: 2; margin-top: 4px; font-size: 12px; color: var(--dim); }
+  #amjc .amjc-pub .v a { font: inherit; border-bottom: 1px solid var(--rule); }
+  #amjc .amjc-pub .v a:hover { border-color: var(--sig); }
+
+  #amjc .amjc-mail {
+    display: inline-block; font: italic 400 clamp(40px, 9vw, 150px)/1 var(--serif); letter-spacing: -.01em;
+    border-bottom: 1px solid var(--rule); overflow-wrap: anywhere;
+  }
+  #amjc .amjc-mail:hover { border-color: var(--sig); }
+  #amjc .amjc-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 32px; font-size: 12px; }
+  #amjc .amjc-foot {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: clamp(80px, 16vh, 180px);
+    padding: 28px var(--gut); border-top: 1px solid var(--rule); font-size: 11px; color: var(--dim);
+  }
+
+  @media (max-width: 760px) {
+    #amjc .amjc-bar .amjc-mark { font-size: 20px; }
+    #amjc .amjc-hero-foot .amjc-hint { display: none; }
+    #amjc .amjc-row { grid-template-columns: 3.4em minmax(0, 1fr); row-gap: 6px; padding-left: 0; padding-right: 0; }
+    #amjc .amjc-row .a, #amjc .amjc-row .p { grid-column: 2; }
+    #amjc .amjc-row .p { justify-content: flex-start; }
+  }
+
+  /* No WebGL: the name comes back as live text over a flat glow. */
+  #amjc.amjc-nogl { background: radial-gradient(70vmax 50vmax at 74% 38%, rgba(236, 230, 218, .14), transparent 70%) fixed, var(--ink); }
+  #amjc.amjc-nogl .amjc-gl, #amjc.amjc-nogl [data-hint], #amjc.amjc-still [data-hint], #amjc.amjc-nosim [data-hint] { display: none; }
+  #amjc.amjc-nogl .amjc-name {
+    position: absolute !important; left: var(--gut); top: 22vh; width: auto; height: auto; clip: auto; clip-path: none; white-space: normal;
+    font: italic 400 clamp(56px, 13vw, 190px)/.86 var(--serif);
+  }
+  #amjc.amjc-nogl .amjc-name span { display: block; }
+  #amjc.amjc-nogl .amjc-name span:nth-child(2) { padding-left: 1.2em; }
+  #amjc.amjc-nogl .amjc-name span:nth-child(4) { padding-left: 1.8em; }
+  @media (max-width: 760px) {
+    #amjc.amjc-nogl .amjc-name { font-size: clamp(53px, 12.35vw, 180px); }
+    #amjc.amjc-nogl .amjc-name span:nth-child(4) { padding-left: 1.55em; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { #amjc *, #amjc *::before, #amjc *::after { transition: none !important; } }
+
+  /* Scroll story: the camera stays fixed while each act passes through the surface. */
+  #amjc.amjc-pin { min-height: var(--story-h, 600vh); overflow: visible; clip-path: none; }
+  #amjc.amjc-pin .amjc-content {
+    position: fixed; inset: 0; width: 100%; height: 100vh; height: 100svh; overflow: hidden;
+    perspective: 1200px; transform-style: preserve-3d;
+  }
+  #amjc.amjc-pin .amjc-bar::after {
+    content: ""; position: absolute; left: var(--gut); right: var(--gut); bottom: 15px; height: 1px;
+    background: var(--sig); transform: scaleX(var(--story-progress, 0)); transform-origin: left center; opacity: .7;
+  }
+  #amjc.amjc-pin .amjc-hero,
+  #amjc.amjc-pin .amjc-sec,
+  #amjc.amjc-pin .amjc-foot {
+    position: absolute; left: 0; top: 0; width: 100%; will-change: transform, opacity;
+  }
+  #amjc.amjc-pin .amjc-hero { height: 100%; min-height: 0; }
+  #amjc.amjc-pin .amjc-sec {
+    padding-top: clamp(84px, 12vh, 132px); opacity: 0; pointer-events: none; transform-origin: 50% 0;
+  }
+  #amjc.amjc-pin .amjc-sec.is-active { pointer-events: auto; }
+  #amjc.amjc-pin .amjc-head { margin-bottom: clamp(20px, 3.5vh, 40px); }
+  #amjc.amjc-pin .amjc-num { font-size: clamp(82px, 13vw, 210px); }
+  #amjc.amjc-pin .amjc-head h2 { font-size: clamp(38px, 5.6vw, 84px); }
+  #amjc.amjc-pin .amjc-row,
+  #amjc.amjc-pin .amjc-pub {
+    opacity: var(--scene-o, 1); transform: translate3d(var(--scene-x, 0), 0, 0) scale(var(--scene-z, 1));
+    transform-origin: left center; will-change: transform, opacity;
+  }
+  #amjc.amjc-pin .amjc-row.is-story { background: rgba(7, 8, 10, .86); }
+  #amjc.amjc-pin .amjc-row.is-story .t { color: var(--sig); }
+  #amjc.amjc-pin .amjc-foot { top: auto; bottom: 0; margin-top: 0; opacity: 0; }
+
+  /* Work index: hovering a row floods the water with that project, the rest of the list recedes. */
+  #amjc .amjc-index .amjc-row { transition: background-color .3s, opacity .3s; }
+  #amjc .amjc-index.is-peek .amjc-row { background: transparent; opacity: .22; }
+  #amjc .amjc-index.is-peek .amjc-row.is-on { opacity: 1; background: rgba(7, 8, 10, .82); }
+  #amjc .amjc-row .t[data-media]::after { content: " \2197"; font: 400 .42em/1 var(--mono); vertical-align: .9em; color: var(--dim); margin-left: .3em; }
+  #amjc .amjc-row:hover .t[data-media]::after { color: var(--sig); }
+
+  /* Project viewer */
+  #amjc .amjc-view {
+    position: fixed; inset: 0; z-index: 10; display: none; flex-direction: column; background: rgba(7, 8, 10, .96);
+    padding: clamp(16px, 3vw, 40px) var(--gut); overflow-y: auto; overscroll-behavior: contain;
+  }
+  #amjc .amjc-view.is-open { display: flex; }
+  #amjc .amjc-view-top { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; margin-bottom: clamp(16px, 3vh, 32px); }
+  #amjc .amjc-view-title { font: italic 400 clamp(32px, 5vw, 72px)/1 var(--serif); }
+  #amjc .amjc-view-meta { margin-top: 8px; color: var(--dim); font-size: 12px; }
+  #amjc .amjc-view-meta a { color: var(--bone); border-bottom: 1px solid var(--rule); margin-left: 12px; }
+  #amjc .amjc-view-close { flex: none; font: 400 12px/1 var(--mono); letter-spacing: .06em; color: var(--bone); background: none; border: 1px solid var(--rule); padding: 9px 14px; cursor: pointer; }
+  #amjc .amjc-view-close:hover { color: var(--sig); border-color: var(--sig); }
+  #amjc .amjc-view-media { flex: 1; display: flex; align-items: center; justify-content: center; min-height: 0; }
+  #amjc .amjc-frame { position: relative; width: min(100%, calc((100vh - 220px) * 16 / 9)); aspect-ratio: 16 / 9; background: #000; }
+  #amjc .amjc-frame iframe, #amjc .amjc-frame video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #amjc .amjc-strip { display: flex; align-items: center; gap: 12px; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 12px; }
+  #amjc .amjc-strip img { flex: none; width: auto; height: auto; max-width: 88vw; max-height: min(64vh, 620px); object-fit: contain; scroll-snap-align: center; background: #000; }
+  #amjc .amjc-view-nav { display: flex; justify-content: space-between; margin-top: clamp(16px, 3vh, 28px); font-size: 12px; }
+  #amjc .amjc-view-nav button { font: inherit; color: var(--dim); background: none; border: 0; cursor: pointer; padding: 6px 0; }
+  #amjc .amjc-view-nav button:hover { color: var(--sig); }
+  #amjc .amjc-view-nav .n { font-style: italic; font-family: var(--serif); font-size: 18px; color: var(--bone); margin-left: 8px; }
+  html.amjc-lock, html.amjc-lock body { overflow: hidden; }
+
+  @media (max-width: 760px) {
+    #amjc.amjc-pin .amjc-sec { padding-top: 68px; }
+    #amjc.amjc-pin .amjc-head { margin-bottom: 18px; }
+    #amjc.amjc-pin .amjc-num { font-size: 76px; }
+    #amjc.amjc-pin .amjc-head h2 { font-size: 38px; }
+    #amjc.amjc-pin .amjc-row { padding-top: 11px; padding-bottom: 11px; }
+    #amjc.amjc-pin .amjc-row .t { font-size: 25px; }
+    #amjc.amjc-pin .amjc-pub { padding-top: 11px; padding-bottom: 11px; }
+    #amjc.amjc-pin .amjc-pub a { font-size: 22px; }
+    #amjc.amjc-pin .amjc-foot span:last-child { max-width: 22em; text-align: right; }
+    #amjc .amjc-view-top { align-items: flex-start; gap: 12px; }
+    #amjc .amjc-view-title { min-width: 0; overflow-wrap: anywhere; }
+    #amjc .amjc-view-meta a { display: inline-block; white-space: nowrap; }
+    #amjc .amjc-view-nav button { min-width: 0; max-width: 48%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  }
+</style>
+</head>
+<body>
+
+<noscript>
+  <style>
+    html, body { margin: 0; padding: 0; background: #07080a; overflow-x: hidden; }
+    #amjc { background: radial-gradient(70vmax 50vmax at 74% 38%, rgba(236, 230, 218, .14), transparent 70%) fixed, #07080a; }
+    #amjc .amjc-gl, #amjc [data-hint], #amjc .amjc-cue { display: none; }
+    #amjc .amjc-name {
+      position: absolute !important; left: var(--gut); top: 22vh; width: auto; height: auto;
+      overflow: visible; clip: auto; clip-path: none; white-space: normal;
+      font: italic 400 clamp(56px, 13vw, 190px)/.86 var(--serif);
+    }
+    #amjc .amjc-name span { display: block; }
+    #amjc .amjc-name span:nth-child(2) { padding-left: 1.2em; }
+    #amjc .amjc-name span:nth-child(4) { padding-left: 1.8em; }
+    @media (max-width: 760px) {
+      #amjc .amjc-name { font-size: clamp(53px, 12.35vw, 180px); }
+      #amjc .amjc-name span:nth-child(4) { padding-left: 1.55em; }
+    }
+  </style>
+</noscript>
+
+<div id="amjc">
+  <canvas class="amjc-gl" aria-hidden="true"></canvas>
+  <main class="amjc-content">
+    <header class="amjc-bar">
+      <a class="amjc-mark" href="/" aria-label="amjc, home">amjc</a>
+      <nav aria-label="Sections">
+        <a href="#amjc-work">work</a>
+        <a href="#amjc-writing">writing</a>
+        <a href="#amjc-contact">contact</a>
+      </nav>
+    </header>
+
+    <section class="amjc-hero">
+      <h1 class="amjc-name amjc-sr"><span>alejandro</span> <span>miguel</span> <span>justino</span> <span>crawford</span></h1>
+      <div class="amjc-hero-foot">
+        <p>real-time visuals<br>live shows &amp; installations<br>writing</p>
+        <p class="amjc-hint" data-hint aria-hidden="true">move across the surface</p>
+        <p class="amjc-cue" aria-hidden="true">scroll</p>
+      </div>
+    </section>
+
+    <section class="amjc-sec" id="amjc-work">
+      <div class="amjc-head">
+        <span class="amjc-num" data-depth="0.22" aria-hidden="true">01</span>
+        <h2 data-depth="0.06">selected work</h2>
+      </div>
+      <ol class="amjc-index">
+        <li class="amjc-row"><span class="y">2024</span><a class="t" href="#work-solo" data-media data-still="media/solo.jpg" data-yt="F7-Ij6xqu5k">So Lo</a><span class="a">Pond</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2023</span><a class="t" href="#work-mothernature" data-media data-still="media/mothernature.jpg" data-yt="sDzIO5ahGE8">Mother Nature</a><span class="a">MGMT</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2018</span><a class="t" href="#work-pharos" data-media data-still="media/pharos-1.jpg" data-imgs="pharos-1 pharos-2 pharos-3 pharos-4 pharos-5 pharos-6 pharos-7 pharos-8 pharos-9">Pharos II</a><span class="a">Childish Gambino</span><span class="p"><a href="https://blogs.nvidia.com.tw/blog/childish-gambinos-pharos-festival-interactive-visuals/" target="_blank" rel="noopener">nvidia</a><a href="https://www.unrealengine.com/en-US/spotlights/childish-gambino-mesmerizes-fans-with-real-time-animation" target="_blank" rel="noopener">unreal engine</a></span></li>
+        <li class="amjc-row"><span class="y">2019</span><a class="t" href="#work-refuse" data-media data-still="media/refuse.jpg" data-yt="FY0ilvPGl7k">Refuse.exe</a><span class="a">Ed Atkins</span><span class="p"><a href="https://curamagazine.com/digital/ed-atkins-refuse-exe/" target="_blank" rel="noopener">cura</a><a href="https://www.tate.org.uk/art/artworks/atkins-refuse-exe-t15781" target="_blank" rel="noopener">tate</a></span></li>
+        <li class="amjc-row"><span class="y">2023</span><a class="t" href="#work-festival" data-media data-still="media/festival.jpg" data-hls="media/festival-reel/playlist.m3u8">Let&rsquo;s Start Here, festival visuals</a><span class="a">Lil Yachty</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2023</span><a class="t" href="#work-releaseparty" data-media data-still="media/releaseparty.jpg" data-yt="oIs39UqSAEA">Let&rsquo;s Start Here, release party</a><span class="a">Lil Yachty</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2020</span><a class="t" href="#work-slowrush" data-media data-still="media/slowrush-1.jpg" data-imgs="slowrush-1 slowrush-2 slowrush-3 slowrush-4 slowrush-5 slowrush-6 slowrush-7">Slow Rush Tour</a><span class="a">Tame Impala</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2023</span><a class="t" href="#work-snl" data-media data-still="media/snl.jpg" data-yt="uCwNi9vaVSE kGAhLNbZ864">SNL</a><span class="a">Lil Yachty</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2019</span><a class="t" href="#work-guava" data-media data-still="media/guava.jpg" data-yt="beM-1t7jDqw">Guava Island Theater</a><span class="a">Childish Gambino</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2019</span><a class="t" href="#work-coachella" data-media data-still="media/coachella.jpg" data-vimeo="338800133">Coachella Mainstage</a><span class="a">Childish Gambino</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2023</span><a class="t" href="#work-jlh" data-media data-still="media/jlh.jpg" data-yt="BrVVR5s5qPE">Just Like Heaven Festival</a><span class="a">MGMT</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2018</span><a class="t" href="#work-ces" data-media data-still="media/ces.jpg" data-yt="RlJ9zB74G_U" data-start="218">CES Keynote</a><span class="a">Intel</span><span class="p"><a href="https://namethemachine.com/project/intel-ces-2018-keynote-pre-show/" target="_blank" rel="noopener">name the machine</a></span></li>
+        <li class="amjc-row"><span class="y">2017</span><a class="t" href="#work-paintmesilver" data-media data-still="media/paintmesilver.jpg" data-yt="5Xml6eYn5Eg">Paint Me Silver</a><span class="a">Pond</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2018</span><a class="t" href="#work-crossroads" data-media data-still="media/crossroads.jpg" data-vimeo="311950915">The Crossroads</a><span class="a">with ESI Design</span><span class="p"><a href="https://www.agp.digital/project/crossroads" target="_blank" rel="noopener">agp</a><a href="https://vrscout.com/news/office-complex-ar-inspired-lobby/" target="_blank" rel="noopener">vr scout</a></span></li>
+        <li class="amjc-row"><span class="y">2018</span><a class="t" href="#work-highstreet" data-media data-still="media/highstreet.jpg" data-vimeo="339633923">110 High Street</a><span class="a">with ESI Design</span><span class="p"><a href="https://www.electrosonic.com/projects/boston-digital-media-band-110-high-street" target="_blank" rel="noopener">electrosonic</a></span></li>
+        <li class="amjc-row"><span class="y">2016</span><a class="t" href="#work-statest" data-media data-still="media/statest.jpg" data-vimeo="229295575">515 N. State St.</a><span class="a">with ESI Design</span><span class="p"><a href="https://esi.nbbj.com/work/515-north-state-street" target="_blank" rel="noopener">esi design</a></span></li>
+        <li class="amjc-row"><span class="y">2014</span><span class="t">Sitting Up on Our Crane</span><span class="a">Pond</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2013</span><a class="t" href="#work-optimizer" data-media data-still="media/optimizer.jpg" data-yt="w-HoJfJ-j9g">The Optimizer</a><span class="a">MGMT</span><span class="p"></span></li>
+        <li class="amjc-row"><span class="y">2011</span><a class="t" href="#work-guggenheim" data-media data-still="media/guggenheim-1.jpg" data-imgs="guggenheim-1 guggenheim-2 guggenheim-3 guggenheim-4 guggenheim-5">Guggenheim Gala</a><span class="a">MGMT</span><span class="p"></span></li>
+      </ol>
+    </section>
+
+    <section class="amjc-sec" id="amjc-writing">
+      <div class="amjc-head">
+        <span class="amjc-num" data-depth="0.22" aria-hidden="true">02</span>
+        <h2 data-depth="0.06">writing &amp; art</h2>
+      </div>
+      <ul class="amjc-pubs">
+        <li class="amjc-pub"><span class="y">2024</span><a href="https://www.youtube.com/watch?v=RBpxYE51sF0" target="_blank" rel="noopener">The Other Side of the Mountain</a><span class="v">AIFF</span></li>
+        <li class="amjc-pub"><span class="y">2019</span><a href="https://dl.acm.org/doi/abs/10.1145/3306307.3338114" target="_blank" rel="noopener">Childish Gambino&rsquo;s Pharos: real-time dome projection for live concert</a><span class="v">SIGGRAPH</span></li>
+        <li class="amjc-pub"><span class="y">2017</span><a href="https://www.moca.org/exhibitions/storefront-poetic-research-bureau" target="_blank" rel="noopener">This Known World</a><span class="v">MOCA</span></li>
+        <li class="amjc-pub"><span class="y">2016</span><a href="http://thefanzine.com/pre-alpha-the-yellow-books-of-the-plastic-eating-philistines/" target="_blank" rel="noopener">Pre-Alpha</a><span class="v">The Fanzine</span></li>
+        <li class="amjc-pub"><span class="y">2016</span><a href="https://www.killscreen.com/a-videogame-thats-also-a-poem-about-someone-elses-dreams/" target="_blank" rel="noopener">Diana Hamilton&rsquo;s Dreams</a><span class="v">Gauss-PDF</span></li>
+        <li class="amjc-pub"><span class="y">2014</span><a href="https://brooklynrail.org/2017/04/criticspage/Alejandro-Miguel-Justino-Crawford-Egress/" target="_blank" rel="noopener">Egress</a><span class="v">the Claudius App; <a href="https://bax.site.wesleyan.edu/bax-2015/" target="_blank" rel="noopener">Best American Experimental Writing 2015</a></span></li>
+        <li class="amjc-pub"><span class="y">2014</span><a href="http://poetrywillbemadebyall.com/alejandro-crawford-codecs/" target="_blank" rel="noopener">Codecs</a><span class="v">CURA, <a href="http://curamag.com/issues/2014/11/25/codecs" target="_blank" rel="noopener">issue 14</a></span></li>
+        <li class="amjc-pub"><span class="y">2013</span><a href="https://pqueue.wordpress.com/about/" target="_blank" rel="noopener">Nautilis</a><span class="v">P-Queue, vol. 10</span></li>
+        <li class="amjc-pub"><span class="y">2013</span><a href="https://jacket2.org/commentary/walkthrough-total-walkthrough" target="_blank" rel="noopener">Link</a><span class="v">Jacket2</span></li>
+        <li class="amjc-pub"><span class="y">2013</span><a href="https://thevoltablog.wordpress.com/2014/05/07/poemfield3-by-alejandro-miguel-justino-crawford/" target="_blank" rel="noopener">poemfield 3</a><span class="v">Gauss-PDF</span></li>
+        <li class="amjc-pub"><span class="y">2012</span><a href="https://www.youtube.com/watch?v=xNZA9w4gTis" target="_blank" rel="noopener">Fantastic Explosion of Time</a><span class="v">Pond</span></li>
+        <li class="amjc-pub"><span class="y">2012</span><a href="https://vimeo.com/40421542" target="_blank" rel="noopener">Milk</a><span class="v">Dandelion Mag, Performance/MACHINE</span></li>
+        <li class="amjc-pub"><span class="y">2012</span><a href="https://www.mottodistribution.com/shop/junkjet-6.html" target="_blank" rel="noopener">Stills from Korea3</a><span class="v">junkjet 6</span></li>
+        <li class="amjc-pub"><span class="y">2011</span><a href="https://magazine.art21.org/2011/09/22/how-to-play-a-vonome/" target="_blank" rel="noopener">How to play a Vonome</a><span class="v">Art21</span></li>
+        <li class="amjc-pub"><span class="y">2010</span><a href="https://aphasic-letters.com/edit/publications.html" target="_blank" rel="noopener">Seven Controlled Vocabularies: Chinese Editions</a><span class="v">Edit Publications</span></li>
+        <li class="amjc-pub"><span class="y">2010</span><a href="https://web.archive.org/web/20110712164012/http://www.necessetics.com/alejandro.html" target="_blank" rel="noopener">Wasted</a><span class="v">sous rature, 3ssue</span></li>
+        <li class="amjc-pub"><span class="y">2010</span><a href="https://www.journal1913.org/wp-content/uploads/2011/02/1913-issue-4-.pdf" target="_blank" rel="noopener">pP.</a><span class="v">1913 a journal of forms, issue 4</span></li>
+        <li class="amjc-pub"><span class="y">2009</span><a href="https://www.amazon.com/Morpheu-M-J-Crawford/dp/1935402064" target="_blank" rel="noopener">Morpheu</a><span class="v">BlazeVOX</span></li>
+      </ul>
+    </section>
+
+    <section class="amjc-sec" id="amjc-contact">
+      <div class="amjc-head">
+        <span class="amjc-num" data-depth="0.22" aria-hidden="true">03</span>
+        <h2 data-depth="0.06">contact</h2>
+      </div>
+      <a class="amjc-mail" href="mailto:alejandro@amjc.info">alejandro@amjc.info</a>
+      <p class="amjc-links">
+        <a href="https://twitter.com/amjcrawford" target="_blank" rel="noopener">twitter &#8599;</a>
+        <a href="https://www.linkedin.com/in/amjcrawford/" target="_blank" rel="noopener">linkedin &#8599;</a>
+      </p>
+    </section>
+
+    <footer class="amjc-foot">
+      <span>amjc &copy; <span data-year>2026</span></span>
+      <span>the surface is simulated live on your gpu, dithered 8&times;8 bayer</span>
+    </footer>
+  </main>
+
+  <div class="amjc-view" role="dialog" aria-modal="true" aria-labelledby="amjc-view-title">
+    <div class="amjc-view-top">
+      <div>
+        <h2 class="amjc-view-title" id="amjc-view-title"></h2>
+        <p class="amjc-view-meta"></p>
+      </div>
+      <button class="amjc-view-close" type="button">close</button>
+    </div>
+    <div class="amjc-view-media"></div>
+    <div class="amjc-view-nav">
+      <button type="button" data-step="-1">&larr; prev<span class="n"></span></button>
+      <button type="button" data-step="1">next<span class="n"></span> &rarr;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('amjc');
+  if (!root || root.getAttribute('data-live')) return;
+  root.setAttribute('data-live', '1');
+  var html = document.documentElement;
+
+  // On the live page, lift the block out of the Squarespace template so it owns the whole page.
+  // Inside the editor (framed) it stays put so the page can still be edited.
+  var framed = true;
+  try { framed = window.self !== window.top; } catch (e) {}
+  if (!framed) {
+    document.body.insertBefore(root, document.body.firstChild);
+    html.classList.add('amjc-takeover');
+  }
+
+  var yr = root.querySelector('[data-year]');
+  if (yr) yr.textContent = new Date().getFullYear();
+  var hint = root.querySelector('[data-hint]');
+  if (hint && window.matchMedia && matchMedia('(hover: none)').matches) hint.textContent = 'touch the surface';
+
+  var mq = window.matchMedia ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+  var still = !!(mq && mq.matches);
+
+  // ---- Fixed-camera scroll story. Real document scroll becomes the timeline; the viewport never moves.
+  var layers = [].map.call(root.querySelectorAll('[data-depth]'), function (el) {
+    return { el: el, d: parseFloat(el.getAttribute('data-depth')) || 0 };
+  });
+  var heroScene = root.querySelector('.amjc-hero');
+  var workScene = root.querySelector('#amjc-work');
+  var writingScene = root.querySelector('#amjc-writing');
+  var contactScene = root.querySelector('#amjc-contact');
+  var footScene = root.querySelector('.amjc-foot');
+  var storyRows = [].slice.call(root.querySelectorAll('.amjc-row'));
+  var storyPubs = [].slice.call(root.querySelectorAll('.amjc-pub'));
+  var storyNav = [].slice.call(root.querySelectorAll('.amjc-bar nav a'));
+  var story = { enabled: false }, storyActive = '', storyHashApplied = false;
+  var syncStoryStill = function () {};
+  function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+  function mix(a, b, t) { return a + (b - a) * t; }
+  function smooth(a, b, x) { x = clamp((x - a) / Math.max(b - a, .0001), 0, 1); return x * x * (3 - 2 * x); }
+  function sceneFade(u) { return smooth(0, .09, u) * (1 - smooth(.9, 1, u)); }
+  function setSceneAccess(el, on) {
+    if (!el) return;
+    el.classList.toggle('is-active', on);
+    if ('inert' in el) el.inert = !on;
+    if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true');
+  }
+  function clearStoryStyles() {
+    [heroScene, workScene, writingScene, contactScene, footScene].forEach(function (el) {
+      if (!el) return;
+      el.style.transform = ''; el.style.opacity = ''; el.classList.remove('is-active'); el.removeAttribute('aria-hidden');
+      if ('inert' in el) el.inert = false;
+    });
+    storyRows.concat(storyPubs).forEach(function (el) {
+      el.style.removeProperty('--scene-o'); el.style.removeProperty('--scene-x'); el.style.removeProperty('--scene-z');
+      el.classList.remove('is-story');
+    });
+    storyNav.forEach(function (a) { a.classList.remove('is-current'); a.removeAttribute('aria-current'); });
+    root.style.removeProperty('--story-h'); root.style.removeProperty('--story-progress');
+  }
+  function measureStory() {
+    if (!story.enabled) return;
+    var H = Math.max(540, window.innerHeight), W = window.innerWidth, narrow = W <= 760;
+    var workH = workScene.scrollHeight, writingH = writingScene.scrollHeight;
+    var workStart = H * .72;
+    var workDistance = workH + H * .22;
+    var workSpan = workDistance / (narrow ? .72 : .62);
+    var writingStart = workStart + workSpan - H * .18;
+    var writingDistance = writingH + H * .24;
+    var writingSpan = writingDistance / (narrow ? .76 : .68);
+    var contactStart = writingStart + writingSpan - H * .2;
+    var contactSpan = H * 1.55;
+    var total = contactStart + contactSpan + H;
+    var workFirst = storyRows.length ? storyRows[0].offsetTop + storyRows[0].offsetHeight / 2 : H * .4;
+    var writingFirst = storyPubs.length ? storyPubs[0].offsetTop + storyPubs[0].offsetHeight / 2 : H * .4;
+    var workLandU = clamp((H * .86 + workFirst * .98 - H * .54) / workDistance, .18, .66);
+    var writingLandU = clamp((H * .82 + writingFirst * .98 - H * .42) / writingDistance, .32, .84);
+    story = {
+      enabled: true, H: H, W: W, narrow: narrow, workH: workH, writingH: writingH,
+      workStart: workStart, workSpan: workSpan, writingStart: writingStart, writingSpan: writingSpan,
+      contactStart: contactStart, contactSpan: contactSpan, total: total,
+      workLand: workStart + workSpan * workLandU,
+      writingLand: writingStart + writingSpan * writingLandU,
+      contactLand: contactStart + contactSpan * .42
+    };
+    root.style.setProperty('--story-h', Math.ceil(total) + 'px');
+    if (!storyHashApplied) {
+      storyHashApplied = true;
+      var h = location.hash;
+      var target = h === '#amjc-writing' ? story.writingLand : h === '#amjc-contact' ? story.contactLand : (h === '#amjc-work' || /^#work-/.test(h)) ? story.workLand : 0;
+      if (target) window.scrollTo({ top: target, behavior: 'auto' });
+    }
+  }
+  function configureStory() {
+    var want = !!(glOK && !still);
+    if (!want) {
+      story.enabled = false; root.classList.remove('amjc-pin'); clearStoryStyles(); syncStoryStill(null, false); parallax(); return;
+    }
+    root.classList.add('amjc-pin'); story.enabled = true; measureStory(); parallax();
+  }
+  function storyTarget(hash) {
+    if (!story.enabled) return null;
+    if (hash === '#amjc-work') return story.workLand;
+    if (hash === '#amjc-writing') return story.writingLand;
+    if (hash === '#amjc-contact') return story.contactLand;
+    return null;
+  }
+  function writeRoute(url, mode, state) {
+    try { history[mode === 'push' ? 'pushState' : 'replaceState'](state || null, '', url); } catch (e) {}
+  }
+  function goStory(hash) {
+    var y = storyTarget(hash);
+    if (y === null) return false;
+    writeRoute(hash, location.hash === hash ? 'replace' : 'push', { amjc: 'section', y: y });
+    window.scrollTo({ top: y, behavior: still ? 'auto' : 'smooth' });
+    return true;
+  }
+  storyNav.forEach(function (a) {
+    a.addEventListener('click', function (e) { if (goStory(a.getAttribute('href'))) e.preventDefault(); });
+  });
+  var mark = root.querySelector('.amjc-mark');
+  if (mark) mark.addEventListener('click', function (e) {
+    if (!story.enabled) return;
+    e.preventDefault();
+    writeRoute(location.pathname, location.hash || window.pageYOffset > 4 ? 'push' : 'replace', { amjc: 'home', y: 0 });
+    window.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' });
+  });
+  function parallax() {
+    if (!story.enabled) {
+      var vh = window.innerHeight, offs = [], i, r;
+      for (i = 0; i < layers.length; i++) { r = layers[i].el.parentNode.getBoundingClientRect(); offs.push(r.top + r.height / 2 - vh / 2); }
+      for (i = 0; i < layers.length; i++) layers[i].el.style.transform = still ? '' : 'translate3d(0,' + (-offs[i] * layers[i].d).toFixed(1) + 'px,0)';
+      return;
+    }
+    var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    var H = story.H, W = story.W, maxY = Math.max(1, story.total - H);
+    root.style.setProperty('--story-progress', clamp(y / maxY, 0, 1).toFixed(4));
+
+    var hp = clamp(y / (H * 1.25), 0, 1);
+    heroScene.style.opacity = (1 - smooth(.18, .84, hp)).toFixed(3);
+    heroScene.style.transform = 'translate3d(' + (-hp * (story.narrow ? 9 : 16)).toFixed(2) + 'vw,' + (-hp * 12).toFixed(2) + 'vh,0) scale(' + (1 + hp * .025).toFixed(4) + ')';
+
+    var wu = clamp((y - story.workStart) / story.workSpan, 0, 1);
+    var wo = sceneFade(wu), ws = .955 + smooth(0, .22, wu) * .045;
+    var wy = mix(H * .86, H * .74 - story.workH, wu);
+    var wx = mix(-W * .12, 0, smooth(0, .16, wu)) + mix(0, W * .08, smooth(.87, 1, wu));
+    workScene.style.opacity = wo.toFixed(3);
+    workScene.style.transform = 'translate3d(' + wx.toFixed(1) + 'px,' + wy.toFixed(1) + 'px,0) scale(' + ws.toFixed(4) + ')';
+    var focusY = H * .54, focusRow = null, focusDist = Infinity;
+    var rowRects = storyRows.map(function (row) { return row.getBoundingClientRect(); });
+    storyRows.forEach(function (row, n) {
+      var rr = rowRects[n], cy = rr.top + rr.height / 2;
+      var d = (cy - focusY) / H, near = clamp(1 - Math.abs(d) * 1.6, 0, 1);
+      row.style.setProperty('--scene-o', (.1 + near * .9).toFixed(3));
+      row.style.setProperty('--scene-x', (d * (story.narrow ? 22 : 70)).toFixed(1) + 'px');
+      row.style.setProperty('--scene-z', (.975 + near * .025).toFixed(4));
+      var ad = Math.abs(d);
+      if (ad < focusDist) { focusDist = ad; focusRow = row; }
+    });
+
+    var pu = clamp((y - story.writingStart) / story.writingSpan, 0, 1);
+    var po = sceneFade(pu), ps = .965 + smooth(0, .2, pu) * .035;
+    var py = mix(H * .82, H * .73 - story.writingH, pu);
+    var px = mix(W * .88, 0, smooth(0, .18, pu)) + mix(0, -W * .3, smooth(.88, 1, pu));
+    writingScene.style.opacity = po.toFixed(3);
+    writingScene.style.transform = 'translate3d(' + px.toFixed(1) + 'px,' + py.toFixed(1) + 'px,0) scale(' + ps.toFixed(4) + ')';
+    var pubRects = storyPubs.map(function (pub) { return pub.getBoundingClientRect(); });
+    storyPubs.forEach(function (pub, n) {
+      var pr = pubRects[n], cy = pr.top + pr.height / 2;
+      var d = (cy - focusY) / H, near = clamp(1 - Math.abs(d) * 1.45, 0, 1);
+      pub.style.setProperty('--scene-o', (.14 + near * .86).toFixed(3));
+      pub.style.setProperty('--scene-x', ((n % 2 ? -1 : 1) * (1 - near) * (story.narrow ? 18 : 44)).toFixed(1) + 'px');
+      pub.style.setProperty('--scene-z', (.985 + near * .015).toFixed(4));
+    });
+
+    var cu = clamp((y - story.contactStart) / story.contactSpan, 0, 1);
+    var co = smooth(0, .2, cu), cx = mix(-W * .36, 0, smooth(0, .32, cu));
+    var cy = mix(H * .76, H * .2, smooth(0, .42, cu));
+    contactScene.style.opacity = co.toFixed(3);
+    contactScene.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0) scale(' + (.94 + smooth(0, .38, cu) * .06).toFixed(4) + ')';
+    var fo = smooth(.5, .78, cu);
+    footScene.style.opacity = fo.toFixed(3);
+    footScene.style.transform = 'translate3d(0,' + mix(44, 0, fo).toFixed(1) + 'px,0)';
+
+    layers.forEach(function (layer) {
+      var u = layer.el.closest('#amjc-work') ? wu : layer.el.closest('#amjc-writing') ? pu : cu;
+      layer.el.style.transform = 'translate3d(0,' + ((u - .5) * H * layer.d * -.34).toFixed(1) + 'px,0)';
+    });
+
+    var active = y < story.workStart + story.workSpan * .09 ? 'hero' : y < story.writingStart + story.writingSpan * .09 ? 'work' : y < story.contactStart + story.contactSpan * .08 ? 'writing' : 'contact';
+    if (active !== storyActive) {
+      storyActive = active;
+      setSceneAccess(workScene, active === 'work'); setSceneAccess(writingScene, active === 'writing'); setSceneAccess(contactScene, active === 'contact');
+      storyNav.forEach(function (a) {
+        var on = a.getAttribute('href') === '#amjc-' + active;
+        a.classList.toggle('is-current', on); if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+      });
+    }
+    storyRows.forEach(function (row) { row.classList.toggle('is-story', active === 'work' && row === focusRow); });
+    syncStoryStill(focusRow, active === 'work' && wo > .18);
+  }
+
+  // ---- WebGL
+  var cv = root.querySelector('.amjc-gl');
+  var gl = null, isGL2 = false, glOK = false, simOK = false;
+  var S, R, quad, sceneTex, medTex, A = null, B = null, HF = 0, IF = 0;
+  var mA = 0, mTarget = 0, masp = 16 / 9, medSrc = '', medWant = '';
+  var W = 0, H = 0, cw = 0, ch = 0;
+  var DAMP = 0.93, STEP = 1000 / 120; // every mode shrinks by sqrt(DAMP) per step: ~1% left after 1s
+  var INK = [7 / 255, 8 / 255, 10 / 255], BONE = [236 / 255, 230 / 255, 218 / 255], SIG = [1, 90 / 255, 31 / 255];
+  var nameReady = false;
+
+  var VS = 'attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0.,1.);}';
+  var PREC = '#ifdef GL_FRAGMENT_PRECISION_HIGH\nprecision highp float;\n#else\nprecision mediump float;\n#endif\n';
+
+  // Height field: r = height now, g = height one step ago. The pointer pushes a soft capsule down along its path.
+  var SIM_FS = PREC + [
+    'uniform sampler2D s;uniform vec2 px,a,b;uniform float k,r,damp,asp;varying vec2 v;',
+    'void main(){',
+    ' vec4 c=texture2D(s,v);',
+    ' float n=texture2D(s,v+vec2(px.x,0.)).r+texture2D(s,v-vec2(px.x,0.)).r+texture2D(s,v+vec2(0.,px.y)).r+texture2D(s,v-vec2(0.,px.y)).r;',
+    ' float h=(n*.5-c.g)*damp;',
+    ' vec2 q=vec2(v.x*asp,v.y),A=vec2(a.x*asp,a.y),ba=vec2(b.x*asp,b.y)-A;',
+    ' float t=clamp(dot(q-A,ba)/max(dot(ba,ba),1e-6),0.,1.);',
+    ' vec2 d=q-A-ba*t;',
+    ' h+=k*exp(-dot(d,d)/(r*r));',
+    ' gl_FragColor=vec4(h,c.r,0.,1.);',
+    '}'].join('\n');
+
+  // Scene (glow, horizon, grain, name) refracted through the height field, split per channel,
+  // lit, then crushed to 1 bit per channel with an 8x8 Bayer matrix.
+  var RENDER_FS = PREC + [
+    'uniform sampler2D sim,scn,med;uniform vec2 spx;uniform float asp,sc,tk,gk,has,rk,nk,ma,masp;uniform vec3 ink,bone,sig;varying vec2 v;',
+    'float hs(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}',
+    'float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hs(i),hs(i+vec2(1.,0.)),f.x),mix(hs(i+vec2(0.,1.)),hs(i+1.),f.x),f.y);}',
+    'float b2(vec2 a){a=floor(a);return fract(dot(a,vec2(.5,a.y*.75)));}',
+    'float b4(vec2 a){return b2(.5*a)*.25+b2(a);}',
+    'float b8(vec2 a){return b4(.5*a)*.25+b2(a);}',
+    'vec3 L(vec2 u){',
+    ' vec2 g=vec2(.74,.62+sc*gk);',
+    ' vec2 d=(u-g)*vec2(asp,1.)/min(asp,1.);',
+    ' float r2=dot(d,d);',
+    ' float l=.01+.03*u.y+.13*exp(-r2*3.2)+.24*exp(-r2*34.);',
+    ' float hz=.27+sc*gk*1.4;',
+    ' l+=.05*exp(-pow((u.y-hz)*8.,2.))*(.6+.4*vn(vec2(u.x*asp*9.,sc*gk*3.)));',
+    ' l+=(vn(u*vec2(asp,1.)*3.2+vec2(0.,sc*gk*3.2))-.5)*.05;',
+    ' l*=mix(1.,.26,clamp(sc*.8,0.,1.));',
+    ' vec3 c=vec3(l);',
+    // project still, cover-fit with a little overscan so refraction never reaches its edge; kept in colour so the dither goes 8-colour
+    ' if(ma>0.){vec2 s=asp>masp?vec2(1.,masp/asp):vec2(asp/masp,1.);vec3 mc=texture2D(med,(u-.5)*s*.94+.5).rgb;c=mix(c,pow(mc,vec3(1.3))*.82,ma);}',
+    ' vec2 t=vec2(u.x,u.y-sc*tk);',
+    ' float m=texture2D(scn,t).r*step(0.,t.y)*step(t.y,1.);',
+    ' return mix(c,vec3(.98*(.3+.7*clamp(1.-sc*.9,0.,1.))),m);',
+    '}',
+    'void main(){',
+    ' vec2 u=v,gr=vec2(0.);',
+    ' if(has>.5){',
+    '  gr=vec2(texture2D(sim,u+vec2(spx.x,0.)).r-texture2D(sim,u-vec2(spx.x,0.)).r,texture2D(sim,u+vec2(0.,spx.y)).r-texture2D(sim,u-vec2(0.,spx.y)).r);',
+    '  gr=clamp(gr,-.3,.3);',
+    ' }',
+    ' vec2 o=gr*rk;',
+    ' vec3 c=vec3(L(u+o*1.7).r,L(u+o).g,L(u+o*.3).b);',
+    ' vec3 N=normalize(vec3(-gr*nk,1.));',
+    ' vec3 ld=normalize(vec3(-.5,.6,.65));',
+    ' c+=(dot(N,ld)-ld.z)*.35;',
+    ' c+=sig*pow(max(dot(N,normalize(ld+vec3(0.,0.,1.))),0.),90.)*1.4*step(1e-5,dot(gr,gr));',
+    ' float th=b8(gl_FragCoord.xy)+1./128.;',
+    ' gl_FragColor=vec4(mix(ink,bone,step(vec3(th),c)),1.);',
+    '}'].join('\n');
+
+  function shader(type, src) {
+    var s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(s));
+    return s;
+  }
+  function program(fs, names) {
+    var p = gl.createProgram(), u = {};
+    gl.attachShader(p, shader(gl.VERTEX_SHADER, VS)); gl.attachShader(p, shader(gl.FRAGMENT_SHADER, fs));
+    gl.bindAttribLocation(p, 0, 'p'); gl.linkProgram(p);
+    if (!gl.getProgramParameter(p, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(p));
+    names.split(' ').forEach(function (n) { u[n] = gl.getUniformLocation(p, n); });
+    return { p: p, u: u };
+  }
+  function texture(filter) {
+    var t = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, t);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, filter);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    return t;
+  }
+  function target(w, h) {
+    var t = texture(gl.NEAREST), f = gl.createFramebuffer();
+    gl.texImage2D(gl.TEXTURE_2D, 0, IF, w, h, 0, gl.RGBA, HF, null);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, f);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, t, 0);
+    var ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+    if (ok) { gl.viewport(0, 0, w, h); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); }
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    if (!ok) { gl.deleteTexture(t); gl.deleteFramebuffer(f); return null; }
+    return { t: t, f: f };
+  }
+  function freeTargets() {
+    [A, B].forEach(function (x) { if (x) { gl.deleteTexture(x.t); gl.deleteFramebuffer(x.f); } });
+    A = B = null;
+  }
+
+  function setupGL() {
+    var opts = { alpha: false, antialias: false, depth: false, stencil: false, premultipliedAlpha: false, powerPreference: 'low-power' };
+    try {
+      gl = cv.getContext('webgl2', opts);
+      isGL2 = !!gl;
+      if (!gl) gl = cv.getContext('webgl', opts) || cv.getContext('experimental-webgl', opts);
+      if (!gl) return false;
+      HF = 0;
+      if (isGL2) {
+        if (gl.getExtension('EXT_color_buffer_float') || gl.getExtension('EXT_color_buffer_half_float')) { HF = gl.HALF_FLOAT; IF = gl.RGBA16F; }
+      } else {
+        var hf = gl.getExtension('OES_texture_half_float');
+        if (hf) { gl.getExtension('EXT_color_buffer_half_float'); HF = hf.HALF_FLOAT_OES; IF = gl.RGBA; }
+      }
+      S = program(SIM_FS, 's px a b k r damp asp');
+      R = program(RENDER_FS, 'sim scn med spx asp sc tk gk has rk nk ma masp ink bone sig');
+      quad = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quad);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+      gl.enableVertexAttribArray(0);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      sceneTex = texture(gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+      medTex = texture(gl.LINEAR);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array(4));
+      medSrc = '';
+      A = B = null; W = H = 0;
+      return true;
+    } catch (e) {
+      if (window.console) console.warn('amjc: webgl off', e);
+      return false;
+    }
+  }
+
+  // The name lives in a 2D canvas that the shader samples, so the water can bend it.
+  var sceneCv = document.createElement('canvas'), cx = sceneCv.getContext('2d');
+  function drawScene() {
+    var s = Math.min(1, 1400 / W), w = Math.max(1, Math.round(W * s)), h = Math.max(1, Math.round(H * s));
+    sceneCv.width = w; sceneCv.height = h;
+    cx.fillStyle = '#000'; cx.fillRect(0, 0, w, h);
+    if (nameReady) {
+      var lines = ['alejandro', 'miguel', 'justino', 'crawford'];
+      var narrow = W < 760, ind = narrow ? [0, .1, .03, .16] : [0, .2, .07, .3];
+      var m = Math.max(16 * s, w * .06), avail = w - 2 * m;
+      var fs = narrow ? Math.min(h * .15, w * .27) : Math.min(h * .19, w * .21);
+      var font = function (px) { return 'italic 400 ' + px + 'px "Instrument Serif", Georgia, serif'; };
+      cx.font = font(fs);
+      var k = 1;
+      lines.forEach(function (t, i) { k = Math.min(k, (1 - ind[i]) * avail / cx.measureText(t).width); });
+      fs *= k * (narrow ? .95 : 1); cx.font = font(fs);
+      var lh = fs * .86, first = h * .46 - lh * 1.5 + fs * .3;
+      cx.fillStyle = '#fff'; cx.textBaseline = 'alphabetic';
+      lines.forEach(function (t, i) { cx.fillText(t, m + ind[i] * avail, first + lh * i); });
+    }
+    gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sceneCv);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+  }
+
+  function resize() {
+    var w = cv.clientWidth || window.innerWidth, h = cv.clientHeight || window.innerHeight;
+    if (w === W && h === H) return false;
+    W = w; H = h;
+    var px = w > 1680 ? 3 : 2; // CSS pixels per dither cell
+    cw = Math.max(1, Math.ceil(w / px)); ch = Math.max(1, Math.ceil(h / px));
+    cv.width = cw; cv.height = ch;
+    freeTargets();
+    simOK = false;
+    if (HF) { A = target(cw, ch); B = A && target(cw, ch); simOK = !!(A && B); if (!simOK) freeTargets(); }
+    drawScene();
+    return true;
+  }
+
+  function simOn() { return glOK && simOK && !still; }
+
+  function simStep(drop) {
+    gl.bindFramebuffer(gl.FRAMEBUFFER, B.f);
+    gl.viewport(0, 0, cw, ch);
+    gl.useProgram(S.p);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, A.t);
+    gl.uniform1i(S.u.s, 0);
+    gl.uniform2f(S.u.px, 1 / cw, 1 / ch);
+    gl.uniform2f(S.u.a, drop ? drop.ax : 0, drop ? drop.ay : 0);
+    gl.uniform2f(S.u.b, drop ? drop.bx : 0, drop ? drop.by : 0);
+    gl.uniform1f(S.u.k, drop ? drop.k : 0);
+    gl.uniform1f(S.u.r, drop ? drop.r : .02);
+    gl.uniform1f(S.u.damp, DAMP);
+    gl.uniform1f(S.u.asp, cw / ch);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    var x = A; A = B; B = x;
+  }
+
+  function render() {
+    var sc = story.enabled ? clamp((window.pageYOffset || 0) / (H * 1.25), 0, 1.18) : Math.max(0, -root.getBoundingClientRect().top / H);
+    var live = simOn();
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, ch);
+    gl.useProgram(R.p);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, live ? A.t : sceneTex);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, sceneTex);
+    gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, medTex);
+    gl.uniform1i(R.u.sim, 0); gl.uniform1i(R.u.scn, 1); gl.uniform1i(R.u.med, 2);
+    gl.uniform1f(R.u.ma, mA); gl.uniform1f(R.u.masp, masp);
+    gl.uniform2f(R.u.spx, 1 / cw, 1 / ch);
+    gl.uniform1f(R.u.asp, cw / ch);
+    gl.uniform1f(R.u.sc, sc);
+    gl.uniform1f(R.u.tk, still ? 1 : .78);  // name layer: 0.78x page speed
+    gl.uniform1f(R.u.gk, still ? 0 : .08);  // glow + horizon: far layer
+    gl.uniform1f(R.u.has, live ? 1 : 0);
+    gl.uniform1f(R.u.rk, .22);
+    gl.uniform1f(R.u.nk, 9);
+    gl.uniform3fv(R.u.ink, INK); gl.uniform3fv(R.u.bone, BONE); gl.uniform3fv(R.u.sig, SIG);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  }
+
+  // ---- Loop: runs only while something is moving, then sleeps.
+  var running = false, last = 0, acc = 0, idleAt = 0, drops = [], prev = null, queued = false;
+  function now() { return window.performance ? performance.now() : Date.now(); }
+  function clearSim() {
+    [A, B].forEach(function (x) {
+      if (!x) return;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, x.f); gl.viewport(0, 0, cw, ch);
+      gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    });
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+  }
+  function frame(t) {
+    if (!glOK) { running = false; return; }
+    var live = simOn();
+    if (live) {
+      acc += Math.max(0, Math.min(t - last, 100));
+      var n = 0;
+      while (acc >= STEP && n < 4) { simStep(drops.shift()); acc -= STEP; n++; }
+      if (n === 4) acc = 0;
+    }
+    last = t;
+    if (mA !== mTarget) { mA += (mTarget - mA) * .14; if (Math.abs(mTarget - mA) < .01) mA = mTarget; }
+    var done = t >= idleAt && !drops.length && mA === mTarget;
+    if (done && live) clearSim(); // by now the surface is flat to the eye; zero it so nothing freezes mid-ripple
+    render();
+    parallax();
+    if (done) running = false; else requestAnimationFrame(frame);
+  }
+  function kick(ms) {
+    idleAt = Math.max(idleAt, now() + (ms || 1500));
+    if (!running) { running = true; last = now(); acc = 0; requestAnimationFrame(frame); }
+  }
+  function paint() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () { queued = false; if (glOK) render(); parallax(); });
+  }
+  // A pointer trail extends the newest unconsumed trail segment; taps and the intro drop queue on their own.
+  function drop(ax, ay, bx, by, k, r, trail) {
+    var d = drops[drops.length - 1];
+    if (trail && d && d.trail) { d.bx = bx; d.by = by; d.k = Math.min(d.k, k); }
+    else if (drops.length < 8) drops.push({ ax: ax, ay: ay, bx: bx, by: by, k: k, r: r, trail: !!trail });
+    kick();
+  }
+
+  function point(e) {
+    return { x: e.clientX / (W || 1), y: 1 - e.clientY / (H || 1), cx: e.clientX, cy: e.clientY, t: now() };
+  }
+  var viewOpen = false;
+  window.addEventListener('pointermove', function (e) {
+    if (!simOn() || viewOpen) return;
+    var p = point(e);
+    if (prev && p.t - prev.t < 150) {
+      var dx = p.cx - prev.cx, dy = p.cy - prev.cy, d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 1) return;
+      drop(prev.x, prev.y, p.x, p.y, -Math.min(d / (H * .05), 1) * .55, .02, true);
+    }
+    prev = p;
+  }, { passive: true });
+  window.addEventListener('pointerdown', function (e) {
+    if (!simOn() || viewOpen) return;
+    var p = point(e);
+    drop(p.x, p.y, p.x, p.y, -1.1, .035);
+    prev = p;
+  }, { passive: true });
+  document.addEventListener('mouseout', function (e) { if (!e.relatedTarget) prev = null; });
+
+  function onScroll() { if (glOK && !still) kick(450); else paint(); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  var rt = 0;
+  window.addEventListener('resize', function () {
+    clearTimeout(rt);
+    rt = setTimeout(function () { if (glOK && resize()) prev = null; configureStory(); paint(); }, 120);
+  });
+
+  if (mq) {
+    var onMotion = function (e) { still = e.matches; html.classList.toggle('amjc-smooth', !still); root.classList.toggle('amjc-still', still); configureStory(); paint(); };
+    if (mq.addEventListener) mq.addEventListener('change', onMotion); else if (mq.addListener) mq.addListener(onMotion);
+  }
+  html.classList.toggle('amjc-smooth', !still);
+  root.classList.toggle('amjc-still', still);
+
+  // Draw the name only once its face has loaded, then let one drop fall through it.
+  function whenFont(cb) {
+    var done = false;
+    function go() { if (!done) { done = true; cb(); } }
+    setTimeout(go, 2500);
+    if (!document.fonts || !document.fonts.load) return go();
+    var load = function () { document.fonts.load('italic 400 64px "Instrument Serif"').then(go, go); };
+    var link = document.getElementById('amjc-fonts');
+    if (!link || link.sheet) load();
+    else { link.addEventListener('load', load); link.addEventListener('error', go); }
+  }
+
+  function start() {
+    glOK = setupGL();
+    if (!glOK) { root.classList.add('amjc-nogl'); configureStory(); parallax(); return; }
+    resize();
+    root.classList.toggle('amjc-nosim', !simOK);
+    configureStory();
+    paint();
+    whenFont(function () {
+      if (!glOK) return;
+      nameReady = true; drawScene(); paint();
+      if (simOn()) {
+        setTimeout(function () { drop(.3, .56, .3, .56, -.56, .035); }, 120);
+        setTimeout(function () { drop(.62, .4, .62, .4, -.36, .025); }, 380);
+      }
+    });
+  }
+
+  // ---- Work index: a hovered row pours its still into the water.
+  var index = root.querySelector('.amjc-index');
+  var items = [].slice.call(index.querySelectorAll('.t[data-media]'));
+  var imgs = {}, onRow = null;
+  function loadImg(src, cb) {
+    var im = imgs[src];
+    if (!im) { im = imgs[src] = new Image(); im.decoding = 'async'; im.src = src; }
+    if (im.complete && im.naturalWidth) cb(im); else im.addEventListener('load', function () { cb(im); }, { once: true });
+  }
+  function showStill(src) {
+    medWant = src;
+    if (!src) { mTarget = 0; if (still) { mA = 0; paint(); } else kick(900); return; }
+    loadImg(src, function (im) {
+      if (medWant !== src || !glOK) return;
+      if (medSrc !== src) {
+        gl.bindTexture(gl.TEXTURE_2D, medTex);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, im);
+        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+        medSrc = src; masp = im.naturalWidth / im.naturalHeight;
+        if (mA > .45) mA = .45; // dip, so a swap reads as a new image rising rather than a cut
+      }
+      mTarget = 1;
+      if (still) { mA = 1; paint(); } else kick(900);
+    });
+  }
+  var storyRow = null;
+  syncStoryStill = function (row, active) {
+    if (!story.enabled || onRow) return;
+    if (!active || !row) {
+      if (storyRow) { storyRow = null; showStill(''); }
+      return;
+    }
+    if (row === storyRow) return;
+    storyRow = row;
+    var t = row.querySelector('[data-still]');
+    showStill(t ? t.getAttribute('data-still') : '');
+  };
+  [].forEach.call(index.querySelectorAll('.amjc-row'), function (row) {
+    var t = row.querySelector('[data-still]');
+    row.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'mouse' || !glOK) return;
+      index.classList.add('is-peek');
+      if (onRow) onRow.classList.remove('is-on');
+      row.classList.add('is-on'); onRow = row;
+      showStill(t ? t.getAttribute('data-still') : '');
+    });
+  });
+  index.addEventListener('pointerleave', function () {
+    index.classList.remove('is-peek');
+    if (onRow) onRow.classList.remove('is-on');
+    onRow = null;
+    if (story.enabled) parallax(); else showStill('');
+  });
+  if ('IntersectionObserver' in window) {
+    var warm = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      warm.disconnect();
+      items.forEach(function (t) { loadImg(t.getAttribute('data-still'), function () {}); });
+    }, { rootMargin: '400px' });
+    warm.observe(index);
+  }
+
+  // ---- Project viewer
+  var view = root.querySelector('.amjc-view'), vMedia = view.querySelector('.amjc-view-media');
+  var vTitle = view.querySelector('.amjc-view-title'), vMeta = view.querySelector('.amjc-view-meta');
+  var vClose = view.querySelector('.amjc-view-close'), cur = -1, opener = null, routedFocus = null;
+  function el(tag, attrs) { var n = document.createElement(tag); for (var k in attrs) n.setAttribute(k, attrs[k]); return n; }
+  function frameFor(src, title) {
+    var f = el('div', { 'class': 'amjc-frame' });
+    f.appendChild(el('iframe', { src: src, title: title, allow: 'autoplay; fullscreen; picture-in-picture; encrypted-media', allowfullscreen: '' }));
+    return f;
+  }
+  function hlsVideo(src, poster) {
+    var f = el('div', { 'class': 'amjc-frame' }), v = el('video', { controls: '', playsinline: '', poster: poster, preload: 'metadata' });
+    f.appendChild(v);
+    // hls.js wherever Media Source works; native HLS (iPhone Safari) otherwise
+    if (!(window.MediaSource || window.ManagedMediaSource)) v.src = src;
+    else {
+      var go = function () {
+        if (window.Hls && window.Hls.isSupported()) { var h = new window.Hls(); h.loadSource(src); h.attachMedia(v); }
+        else v.src = src;
+      };
+      if (window.Hls) go();
+      else { var s = el('script', { src: 'vendor/hls.min.js' }); s.onload = go; document.head.appendChild(s); }
+    }
+    return f;
+  }
+  function open(i, routeMode) {
+    cur = (i + items.length) % items.length;
+    var t = items[cur], row = t.closest('.amjc-row'), title = t.textContent;
+    vTitle.textContent = title;
+    vMeta.textContent = row.querySelector('.a').textContent + ', ' + row.querySelector('.y').textContent;
+    [].forEach.call(row.querySelectorAll('.p a'), function (a) { vMeta.appendChild(a.cloneNode(true)); });
+    vMedia.textContent = '';
+    var yt = t.getAttribute('data-yt'), vm = t.getAttribute('data-vimeo'), im = t.getAttribute('data-imgs'), hls = t.getAttribute('data-hls');
+    if (yt) {
+      var col = el('div', { style: 'display:flex;flex-direction:column;gap:16px;width:100%;align-items:center' });
+      yt.split(' ').forEach(function (id, n) {
+        var st = t.getAttribute('data-start');
+        col.appendChild(frameFor('https://www.youtube-nocookie.com/embed/' + id + '?rel=0&modestbranding=1' + (n ? '' : '&autoplay=1') + (st ? '&start=' + st : ''), title));
+      });
+      vMedia.appendChild(col);
+    } else if (vm) vMedia.appendChild(frameFor('https://player.vimeo.com/video/' + vm + '?autoplay=1&dnt=1&title=0&byline=0', title));
+    else if (hls) vMedia.appendChild(hlsVideo(hls, t.getAttribute('data-still')));
+    else if (im) {
+      var strip = el('div', { 'class': 'amjc-strip' });
+      im.split(' ').forEach(function (k, n) { strip.appendChild(el('img', { src: 'media/' + k + '.jpg', alt: title + ', still ' + (n + 1), loading: 'lazy' })); });
+      vMedia.appendChild(strip);
+    }
+    view.querySelector('[data-step="-1"] .n').textContent = items[(cur - 1 + items.length) % items.length].textContent;
+    view.querySelector('[data-step="1"] .n').textContent = items[(cur + 1) % items.length].textContent;
+    if (!viewOpen) {
+      opener = document.activeElement;
+      view.classList.add('is-open'); html.classList.add('amjc-lock'); viewOpen = true;
+      vClose.focus();
+    }
+    if (routeMode === 'push') {
+      var sy = window.pageYOffset || document.documentElement.scrollTop || 0;
+      writeRoute('#amjc-work', 'replace', { amjc: 'section', y: sy });
+      writeRoute(t.getAttribute('href'), 'push', { amjc: 'viewer', y: sy });
+    } else if (routeMode === 'replace') {
+      writeRoute(t.getAttribute('href'), 'replace', { amjc: 'viewer', y: window.pageYOffset || 0 });
+    }
+  }
+  function close(writeHistory) {
+    if (!viewOpen) return;
+    var returnTo = opener;
+    view.classList.remove('is-open'); html.classList.remove('amjc-lock'); viewOpen = false;
+    vMedia.textContent = ''; // stops playback
+    if (writeHistory !== false) {
+      if (history.state && history.state.amjc === 'viewer') { routedFocus = returnTo; history.back(); }
+      else {
+        writeRoute('#amjc-work', 'replace', { amjc: 'section', y: story.enabled ? story.workLand : window.pageYOffset || 0 });
+        if (returnTo && returnTo.focus) returnTo.focus();
+      }
+    } else if (returnTo && returnTo.focus) {
+      returnTo.focus();
+    }
+  }
+  items.forEach(function (t, i) { t.addEventListener('click', function (e) { e.preventDefault(); open(i, 'push'); }); });
+  vClose.addEventListener('click', close);
+  [].forEach.call(view.querySelectorAll('[data-step]'), function (b) {
+    b.addEventListener('click', function () { open(cur + parseInt(b.getAttribute('data-step'), 10), 'replace'); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (!viewOpen) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight' && !/INPUT|TEXTAREA/.test(e.target.tagName)) open(cur + 1, 'replace');
+    else if (e.key === 'ArrowLeft' && !/INPUT|TEXTAREA/.test(e.target.tagName)) open(cur - 1, 'replace');
+    else if (e.key === 'Tab') { // keep focus inside the viewer
+      var f = [].filter.call(view.querySelectorAll('button, a, iframe, video'), function (n) { return n.offsetParent; });
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  });
+  (function () {
+    var hit = items.filter(function (t) { return t.getAttribute('href') === location.hash; })[0];
+    if (hit) open(items.indexOf(hit), 'none');
+  })();
+  window.addEventListener('popstate', function (e) {
+    var hit = items.filter(function (t) { return t.getAttribute('href') === location.hash; })[0];
+    if (hit) {
+      if (story.enabled) window.scrollTo({ top: e.state && typeof e.state.y === 'number' ? e.state.y : story.workLand, behavior: 'auto' });
+      if (!viewOpen || items[cur] !== hit) open(items.indexOf(hit), 'none');
+      routedFocus = null;
+      return;
+    }
+    if (viewOpen) close(false);
+    if (story.enabled) {
+      var target = storyTarget(location.hash);
+      if (target !== null) window.scrollTo({ top: e.state && typeof e.state.y === 'number' ? e.state.y : target, behavior: 'auto' });
+      else if (!location.hash) window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    if (routedFocus && routedFocus.focus) {
+      var returnFocus = routedFocus;
+      setTimeout(function () {
+        try { returnFocus.focus({ preventScroll: true }); } catch (x) { returnFocus.focus(); }
+      }, 0);
+    }
+    routedFocus = null;
+  });
+
+  cv.addEventListener('webglcontextlost', function (e) { e.preventDefault(); glOK = false; running = false; root.classList.add('amjc-nogl'); });
+  cv.addEventListener('webglcontextrestored', function () {
+    root.classList.remove('amjc-nogl');
+    glOK = setupGL();
+    if (!glOK) { root.classList.add('amjc-nogl'); return; }
+    resize(); paint();
+  });
+
+  start();
+})();
+</script>
+</body>
+</html>
